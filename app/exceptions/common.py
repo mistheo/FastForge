@@ -28,3 +28,9 @@ class ServerError(FastForgeException):
             tb = traceback.format_exc()
             message = f"{message}\nTraceback:\n{tb}"
         super().__init__(message, 500)
+
+class BadRequest(FastForgeException):
+    """Exception pour requête invalide"""
+
+    def __init__(self, message: str = "Bad request"):
+        super().__init__(message, 400)
