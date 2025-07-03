@@ -2,7 +2,7 @@
 Configuration Pydantic
 """
 
-from pydantic import BaseSettings
+from pydantic_settings import BaseSettings
 from typing import Optional
 from ..enums.cache import CacheType
 
