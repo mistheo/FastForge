@@ -10,7 +10,7 @@ from ...enums.hooks import HookType
 class HooksDecorator:
     """Décorateur pour le système de hooks"""
     
-    def __init__(self, hooks_config: Dict[str, List[str]], hooks_params: Dict[str, Dict[str, Any]] = None):
+    def __init__(self, hooks_config: Dict[str, List[str]], hooks_params: Dict[str, Dict[str, Any]] = {}):
         self.hooks_config = hooks_config
         self.hooks_params = hooks_params
     
