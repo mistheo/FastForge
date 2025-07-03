@@ -1,4 +1,5 @@
 """
+./app/core/decorators/__init__.py
 Decorators module - Expose tous les décorateurs
 """
 

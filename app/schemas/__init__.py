@@ -1,4 +1,5 @@
 """
+./app/schemas/__init__.py
 Schemas module - Expose BaseSchema et tous les schémas
 """
 

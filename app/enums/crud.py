@@ -1,4 +1,5 @@
 """
+./app/enums/crud.py
 CRUD Operations enumeration
 """
 

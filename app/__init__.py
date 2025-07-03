@@ -1,4 +1,5 @@
 """
+./app/__init__.py
 Application principale FastForge
 """
 

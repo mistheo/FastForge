@@ -1,4 +1,5 @@
 """
+./app/core/cache/memory.py
 Implémentation cache mémoire
 """
 

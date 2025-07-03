@@ -1,4 +1,5 @@
 """
+./app/enums/permissions.py
 Permissions, User Roles, FieldVisibility enumerations
 """
 

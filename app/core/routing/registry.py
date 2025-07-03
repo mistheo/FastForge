@@ -1,4 +1,5 @@
 """
+./app/core/routing/registry.py
 Registre des modèles et endpoints
 """
 

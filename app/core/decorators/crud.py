@@ -1,4 +1,5 @@
 """
+./app/core/decorators/crud.py
 @crud_model - Génération CRUD automatique
 """
 

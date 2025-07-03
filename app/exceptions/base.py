@@ -1,4 +1,5 @@
 """
+./app/exceptions/base.py
 Base exception class
 """
 

@@ -1,4 +1,5 @@
 """
+./app/exceptions/__init__.py
 Exceptions module - Expose FastForgeException and common exception classes
 """
 

@@ -1,4 +1,5 @@
 """
+./app/middleware/error_handler.py
 Gestionnaire global des erreurs
 """
 

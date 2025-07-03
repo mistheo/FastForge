@@ -1,4 +1,5 @@
 """
+./app/enums/hooks.py
 Hooks enumeration
 """
 

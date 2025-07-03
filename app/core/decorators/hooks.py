@@ -1,4 +1,5 @@
 """
+./app/core/decorators/hooks.py
 @hooks - Système de hooks
 """
 

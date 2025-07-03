@@ -1,4 +1,5 @@
 """
+./app/core/decorators/custom.py
 @custom_endpoint - Endpoints personnalisés
 """
 

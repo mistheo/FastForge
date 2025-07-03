@@ -1,4 +1,5 @@
 """
+./app/config/__init__.py
 Configuration module - Expose Settings et get_settings()
 """
 

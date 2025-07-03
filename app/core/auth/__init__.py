@@ -1,4 +1,5 @@
 """
+./app/core/auth/__init__.py
 Authentication module - Expose JWTAuth et PermissionManager
 """
 

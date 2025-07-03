@@ -1,4 +1,5 @@
 """
+./app/utils/helpers.py
 Fonctions utilitaires génériques
 """
 

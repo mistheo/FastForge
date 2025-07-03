@@ -1,4 +1,5 @@
 """
+./app/core/auth/jwt_manager.py
 Gestion des tokens JWT
 """
 

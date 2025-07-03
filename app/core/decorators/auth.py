@@ -1,4 +1,5 @@
 """
+./app/core/decorators/auth.py
 @requires_auth - Authentification
 """
 

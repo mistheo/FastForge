@@ -1,4 +1,5 @@
 """
+./app/models/base.py
 BaseModel avec champs standardisés
 """
 

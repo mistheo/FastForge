@@ -1,4 +1,5 @@
 """
+./app/utils/hooks.py
 HookRegistry pour le système de hooks
 """
 

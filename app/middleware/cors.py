@@ -1,4 +1,5 @@
 """
+./app/middleware/cors.py
 Configuration CORS
 """
 

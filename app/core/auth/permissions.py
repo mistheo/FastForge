@@ -1,4 +1,5 @@
 """
+./app/core/auth/permissions.py
 Contrôle des permissions
 """
 

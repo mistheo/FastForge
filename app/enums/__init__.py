@@ -1,4 +1,5 @@
 """
+./app/enums/__init__.py
 Enums module - Expose toutes les énumérations
 """
 

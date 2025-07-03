@@ -1,4 +1,5 @@
 """
+./app/middleware/logging.py
 Middleware de logging des requêtes
 """
 

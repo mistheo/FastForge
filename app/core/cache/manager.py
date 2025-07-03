@@ -1,4 +1,5 @@
 """
+./app/core/cache/manager.py
 Interface unifiée du cache
 """
 

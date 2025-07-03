@@ -1,4 +1,5 @@
 """
+./app/core/routing/generator.py
 Générateur principal des routes
 """
 

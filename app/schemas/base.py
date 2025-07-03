@@ -1,4 +1,5 @@
 """
+./app/schemas/base.py
 BaseSchema pour réponses
 """
 
