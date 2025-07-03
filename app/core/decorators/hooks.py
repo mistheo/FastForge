@@ -5,6 +5,7 @@
 
 from typing import Dict, List, Callable, Any
 from ...enums.hooks import HookType
+from ...exceptions.base import FastForgeException
 
 
 class HooksDecorator:
@@ -14,6 +15,23 @@ class HooksDecorator:
         self.hooks_config = hooks_config
         self.hooks_params = hooks_params
     
+    def _validate_hook_config(self):
+        """Valide que la configuration des hooks est correcte"""
+        valid_hook_types = {e.value for e in HookType}
+        
+        for hook_type, hook_names in self.hooks_config.items():
+            if hook_type not in valid_hook_types:
+                raise FastForgeException(
+                    f"Invalid hook type: {hook_type}. Valid types: {valid_hook_types}",
+                    status_code=500
+                )
+            
+            if not isinstance(hook_names, list):
+                raise FastForgeException(
+                    f"Hook names must be a list for type {hook_type}",
+                    status_code=500
+                )
+    
     def __call__(self, func: Callable) -> Callable:
         """Applique le décorateur à la fonction"""
         pass
@@ -21,6 +39,7 @@ class HooksDecorator:
     def execute_hooks(self, hook_type: HookType, **kwargs) -> Any:
         """Exécute les hooks d'un type donné"""
         pass
+    
 
 
 def hooks(**hooks_config) -> Callable:
