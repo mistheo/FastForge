@@ -10,8 +10,9 @@ from ...enums.hooks import HookType
 class HooksDecorator:
     """Décorateur pour le système de hooks"""
     
-    def __init__(self, hooks_config: Dict[str, List[str]]):
+    def __init__(self, hooks_config: Dict[str, List[str]], hooks_params: Dict[str, Dict[str, Any]] = None):
         self.hooks_config = hooks_config
+        self.hooks_params = hooks_params
     
     def __call__(self, func: Callable) -> Callable:
         """Applique le décorateur à la fonction"""
