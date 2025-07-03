@@ -32,6 +32,10 @@ class HooksDecorator:
                     status_code=500
                 )
     
+    def _execute_with_hooks(self, func: Callable, is_async: bool, *args, **kwargs):
+        """Exécute la fonction avec tous ses hooks"""
+        pass
+    
     def __call__(self, func: Callable) -> Callable:
         """Applique le décorateur à la fonction"""
         pass
