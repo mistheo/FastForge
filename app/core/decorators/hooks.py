@@ -14,10 +14,12 @@ class HooksDecorator:
     def __init__(self, hooks_config: Dict[str, List[str]], hooks_params: Dict[str, Dict[str, Any]] = {}):
         self.hooks_config = hooks_config
         self.hooks_params = hooks_params
+        
+        self._validate_hook_config()
     
     def _validate_hook_config(self):
         """Valide que la configuration des hooks est correcte"""
-        valid_hook_types = {e.value for e in HookType}
+        valid_hook_types = {e.value for e in HookType} + {"hook_params"}
         
         for hook_type, hook_names in self.hooks_config.items():
             if hook_type not in valid_hook_types:
