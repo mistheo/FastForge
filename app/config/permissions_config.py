@@ -1,41 +1,39 @@
+# permissions.py
 from enum import Enum
-from collections import defaultdict
-from user_roles import UserRole
-
+from typing import List, Type
+from pydantic import BaseModel
 
 class PermissionsMode(Enum):
     WHITELIST = "whitelist"
     BLACKLIST = "blacklist"
 
+class UserRole(Enum):
+    PUBLIC = "public"
+    USERS = "users"
+    USER = "user"
+    ADMIN = "admin"
+    SUPERADMIN = "superadmin"
+
 class PermissionsConfig:
     def __init__(self):
-        self.configs: dict[UserRole, dict[PermissionsMode, list[str]]] = {
-            role: defaultdict(list) for role in UserRole
-        }
+        self.configs = {}
 
-    def add_field(self, role: UserRole, mode: PermissionsMode, field: str):
-        """Ajoute un champ pour un rôle/mode donné"""
-        if not isinstance(role, UserRole):
-            raise ValueError(f"Invalid role: {role}")
-        if not isinstance(mode, PermissionsMode):
-            raise ValueError(f"Invalid mode: {mode}")
-        if not isinstance(field, str):
-            raise ValueError("Field must be a string")
+    def register(self, model: Type[BaseModel], role: UserRole, mode: PermissionsMode, fields: List[str]):
+        model_fields = set(model.model_fields.keys())
+        for f in fields:
+            if f not in model_fields:
+                raise ValueError(f"Field '{f}' does not exist in {model.__name__}")
+        model_config = self.configs.setdefault(model, {})
+        field_set = model_config.setdefault((role, mode), set())
+        field_set.update(fields)
 
-        self.configs[role][mode].append(field)
+    def get(self, model: Type[BaseModel], role: UserRole, mode: PermissionsMode) -> List[str]:
+        return sorted(self.configs.get(model, {}).get((role, mode), []))
 
-    def get_fields(self, role: UserRole, mode: PermissionsMode) -> List[str]:
-        """Récupère les champs d'un rôle/mode donné"""
-        return self.configs[role][mode]
+permissions_config = PermissionsConfig()
 
-    def validate(self) -> bool:
-        """Valide la configuration complète"""
-        for role, config_dict in self.configs.items():
-            if not isinstance(config_dict, dict):
-                raise ValueError(f"Config for {role} must be a dictionary.")
-            for mode, fields in config_dict.items():
-                if not isinstance(mode, PermissionsMode):
-                    raise ValueError(f"Invalid mode in {role}: {mode}")
-                if not isinstance(fields, list) or not all(isinstance(f, str) for f in fields):
-                    raise ValueError(f"Fields for {role}/{mode} must be a list of strings")
-        return True
+def Permissions(role: UserRole, mode: PermissionsMode, fields: List[str]):
+    def decorator(cls: Type[BaseModel]):
+        permissions_config.register(cls, role, mode, fields)
+        return cls
+    return decorator
