@@ -1,7 +1,6 @@
 # permissions.py
 from enum import Enum
 from typing import List, Type, Dict, Any
-import app.models.model_data
 from .user_roles import UserRole
 
 class PermissionsMode(Enum):
@@ -78,11 +77,20 @@ class PermissionsRegister:
 
 
 
-def Permissions(role: UserRole, mode: PermissionsMode, fields: List[str]):
-    """Decorator to register model field permissions for a given user role.
+def Permissions(role: UserRole, mode: PermissionsMode, attributes: List[str]):
+    """Decorator to register model attribute permissions for a given user role.
     Only allowed on subclasses of ModelData.
     """
     def decorator(cls):
-        PermissionsRegister.register(cls, role, mode, fields)
+        PermissionsRegister.register(cls, role, mode, attributes)
         return cls
+    return decorator
+
+def AllUserRolePermissions(mode:PermissionsMode, attributes: List[str]):
+    
+    def decorator(cls):
+        for role in list(UserRole):
+            PermissionsRegister.register(cls, role, mode, attributes)
+        return cls
+    
     return decorator
