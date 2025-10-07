@@ -1,6 +1,6 @@
 from endpoint_config import EndpointConfig, UserRole
 from ownership_config import OwnershipConfig
-from permissions_config import PermissionsConfig
+from permissions_config import PermissionsRegister
 
 class ModelConfig:
     def __init__(self):
@@ -15,7 +15,7 @@ class ModelConfig:
             "delete": EndpointConfig()
         }
         self.ownership: OwnershipConfig = OwnershipConfig()
-        self.permissions: PermissionsConfig = PermissionsConfig()
+        self.permissions: PermissionsRegister = PermissionsRegister()
         
         
         def validate_model_config(self):
@@ -34,7 +34,7 @@ class ModelConfig:
                     raise ValueError(f"Endpoint config for {key} must be an instance of EndpointConfig.")
             if not isinstance(self.ownership, OwnershipConfig):
                 raise ValueError("Ownership must be an instance of OwnershipConfig.")
-            if not isinstance(self.permissions, PermissionsConfig):
+            if not isinstance(self.permissions, PermissionsRegister):
                 raise ValueError("Permissions must be an instance of PermissionsConfig.")
             
             return True
