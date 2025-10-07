@@ -13,14 +13,12 @@ from odmantic import Model, Field
 from app.config.user_roles import UserRole
 from app.config.permissions_config import PermissionsMode, Permissions
 
-
-
 @Permissions(UserRole.SUPERADMIN, PermissionsMode.WHITELIST, ["internal_id","public_id", "created_at", "updated_at", "is_active", "created_by", "owner_id"])
 @Permissions(UserRole.ADMIN, PermissionsMode.WHITELIST, ["public_id", "created_at", "updated_at", "is_active", "created_by", "owner_id"])
 @Permissions(UserRole.USER, PermissionsMode.WHITELIST, ["public_id", "created_at", "updated_at"])
-#@Permissions(UserRole.PUBLIC, PermissionsMode.WHITELIST, ["public_id", "created_at", "updated_at"])
+# @Permissions(UserRole.PUBLIC, PermissionsMode.WHITELIST, ["public_id", "created_at", "updated_at"])
 @Permissions(UserRole.PUBLIC, PermissionsMode.WHITELIST, [])
-class ModelData(Model):   
+class ModelData(Model):
     """
     Modèle de base pour tous les modèles MongoDB de l'API.
     
