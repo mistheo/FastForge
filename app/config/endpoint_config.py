@@ -1,11 +1,5 @@
 from enums import Enum
-
-class UserRole(Enum):
-    PUBLIC = 'public'
-    USERS = 'users'
-    USER = 'user'
-    ADMIN = 'admin'
-    SUPERADMIN = 'superadmin'
+from .user_roles import UserRole
 
 class EndpointConfig:
     def __init__(
@@ -25,5 +19,4 @@ class EndpointConfig:
             raise ValueError("User role must be an instance of UserRole enum.")
         if self.custom_auth_function is not None and not callable(self.custom_auth_function):
             raise ValueError("Custom auth function must be callable or None.")
-
         return True
