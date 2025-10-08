@@ -146,5 +146,3 @@ class User(ModelData):
 
     def __str__(self) -> str:
         return f"User {self.public_id} ({self.email})"
-
-print(PermissionsRegister.get_permissions(User,UserRole.PUBLIC))
