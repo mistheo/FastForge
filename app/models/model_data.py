@@ -5,19 +5,19 @@ Ce module définit le modèle de base utilisé par tous les modèles de l'API.
 Il inclut les champs essentiels pour la traçabilité, l'ownership et le soft delete.
 """
 from datetime import datetime, timezone
-from typing import Optional, ClassVar
+from typing import Optional, ClassVar, List, Dict
 from uuid import uuid4
 
 from bson import ObjectId
 from odmantic import Model, Field
 from app.config.user_roles import UserRole
-from app.config.permissions_config import PermissionsMode, Permissions
+from app.config.permissions_config import Permissions
 
-@Permissions(UserRole.SUPERADMIN, PermissionsMode.WHITELIST, ["internal_id","public_id", "created_at", "updated_at", "is_active", "created_by", "owner_id"])
-@Permissions(UserRole.ADMIN, PermissionsMode.WHITELIST, ["public_id", "created_at", "updated_at", "is_active", "created_by", "owner_id"])
-@Permissions(UserRole.USER, PermissionsMode.WHITELIST, ["public_id", "created_at", "updated_at"])
-# @Permissions(UserRole.PUBLIC, PermissionsMode.WHITELIST, ["public_id", "created_at", "updated_at"])
-@Permissions(UserRole.PUBLIC, PermissionsMode.WHITELIST, [])
+@Permissions(UserRole.SUPERADMIN, ["internal_id","public_id", "created_at", "updated_at", "is_active", "created_by", "owner_id"])
+@Permissions(UserRole.ADMIN, ["public_id", "created_at", "updated_at", "is_active", "created_by", "owner_id"])
+@Permissions(UserRole.USER, ["public_id", "created_at", "updated_at"])
+@Permissions(UserRole.PUBLIC, ["public_id", "created_at", "updated_at"])
+# @Permissions(UserRole.PUBLIC, PermissionsMode.WHITELIST, [])
 class ModelData(Model):
     """
     Modèle de base pour tous les modèles MongoDB de l'API.
@@ -134,7 +134,20 @@ class ModelData(Model):
         self.owner_id = new_owner_id
         self.update_timestamp()
     
-    def to_public_dict(self, exclude_fields: Optional[list[str]] = None) -> dict:
+    def _to_public_dict(self, exclude_fields: Optional[List[str]] = None) -> Dict:
+        """
+        Retourne un dictionnaire sûr pour l'exposition publique.
+
+        S'assure que les champs sensibles comme hashed_password sont supprimés
+        en plus des exclusions du modèle de base.
+        """
+        exclude_fields += ["hashed_password"]
+        
+        public = ModelData._to_public_dict(self,exclude_fields=exclude_fields)
+        return public
+    
+    @staticmethod
+    def _to_public_dict(obj : "ModelData", exclude_fields: Optional[list[str]] = None) -> dict:
         """
         Convertit le modèle en dictionnaire pour exposition publique.
         
@@ -143,22 +156,17 @@ class ModelData(Model):
             
         Returns:
             dict: Dictionnaire sans les champs sensibles
-        """
-        # Champs sensibles à toujours exclure
-        sensitive_fields = {"internal_id", "_id", "created_by", "owner_id"}
-        
-        if exclude_fields:
-            sensitive_fields.update(exclude_fields)
-        
-        data = self.model_dump()
+        """        
+        data = obj.model_dump()
         
         # Supprimer les champs sensibles
-        for field in sensitive_fields:
+        for field in exclude_fields:
             data.pop(field, None)
         
         return data
     
-    def to_owner_dict(self) -> dict:
+    @staticmethod
+    def to_owner_dict(cls) -> dict:
         """
         Convertit le modèle en dictionnaire pour le propriétaire.
         Inclut plus de détails que to_public_dict().
@@ -166,13 +174,13 @@ class ModelData(Model):
         Returns:
             dict: Dictionnaire avec les champs du propriétaire
         """
-        data = self.model_dump()
+        data = cls.model_dump()
         
         # Exclure uniquement l'internal_id
         data.pop("internal_id", None)
         data.pop("_id", None)
         
-        return data
+        return data       
     
     def __repr__(self) -> str:
         """Représentation string du modèle."""
