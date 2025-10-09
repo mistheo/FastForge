@@ -120,6 +120,7 @@ def test_set_owner_updates_owner_and_timestamp(sample_model):
     """Ensure set_owner updates owner_id and updated_at."""
     new_owner = ObjectId()
     old_time = sample_model.updated_at
+    time.sleep(0.01)
     sample_model.set_owner(new_owner)
     assert sample_model.owner_id == new_owner
     assert sample_model.updated_at > old_time
