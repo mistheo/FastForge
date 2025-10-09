@@ -1,7 +1,7 @@
 # tests/test_model_data.py
 
 import pytest
-from datetime import datetime, timezone
+from datetime import datetime
 from bson import ObjectId
 from uuid import UUID
 import time
@@ -10,6 +10,7 @@ from app.models.model_data import ModelData
 # ------------------------------------------------------------
 # Fixtures
 # ------------------------------------------------------------
+
 
 @pytest.fixture
 def sample_model():
@@ -142,14 +143,14 @@ def test_transfer_ownership_changes_owner(sample_model):
 
 def test_to_public_dict_excludes_sensitive_fields(sample_model):
     """Ensure sensitive fields are excluded from public dict."""
-    result = ModelData._to_public_dict(sample_model, exclude_fields=["internal_id", "created_by"])
+    result = ModelData.to_public_dict(sample_model, exclude_fields=["internal_id", "created_by"])
     assert "internal_id" not in result
     assert "created_by" not in result
 
 
 def test_to_public_dict_respects_exclude_fields_param(sample_model):
     """Ensure exclude_fields parameter works as expected."""
-    result = ModelData._to_public_dict(sample_model, exclude_fields=["owner_id"])
+    result = ModelData.to_public_dict(sample_model, exclude_fields=["owner_id"])
     assert "owner_id" not in result
 
 
@@ -207,7 +208,7 @@ def test_restore_on_already_active_model_is_idempotent(sample_model):
 
 def test_to_public_dict_with_no_exclude_fields_does_not_fail(sample_model):
     """Ensure method handles None as exclude_fields."""
-    result = ModelData._to_public_dict(sample_model, exclude_fields=[])
+    result = ModelData.to_public_dict(sample_model, exclude_fields=[])
     assert isinstance(result, dict)
     assert "public_id" in result
 

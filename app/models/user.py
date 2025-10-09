@@ -19,7 +19,7 @@ from odmantic import Field
 
 from app.models.model_data import ModelData
 from app.config.user_roles import UserRole
-from app.config.permissions_config import Permissions, PermissionsRegister
+from app.config.permissions_config import Permissions
 
 
 # Annotations de permissions définissant quels champs chaque rôle peut accéder
@@ -33,7 +33,7 @@ from app.config.permissions_config import Permissions, PermissionsRegister
 @Permissions(UserRole.USER, [
     "email", "username", "is_verified", "last_login"
 ])
-@Permissions(UserRole.PUBLIC, [],overwrite_attrs=True)
+@Permissions(UserRole.PUBLIC, [], overwrite_attrs=True)
 class User(ModelData):
     """
     Modèle User.
@@ -51,12 +51,18 @@ class User(ModelData):
 
     # Champs d'authentification
     email: str = Field(..., unique=True, index=True, max_length=254)
-    username: Optional[str] = Field(default=None, unique=True, index=True, max_length=150)
+    username: Optional[str] = Field(
+        default=None,
+        unique=True,
+        index=True,
+        max_length=150)
     hashed_password: Optional[str] = Field(default=None)
 
     # Autorisation et vérification
-    roles: List[UserRole] = Field(default_factory=lambda: [UserRole.USER], index=True)
-    groupes : List[str] = Field(default_factory=list, index=True)
+    roles: List[UserRole] = Field(
+        default_factory=lambda: [
+            UserRole.USER], index=True)
+    groupes: List[str] = Field(default_factory=list, index=True)
     is_verified: bool = Field(default=False, index=True)
 
     # Activité
@@ -71,7 +77,7 @@ class User(ModelData):
     # ----------------------------
     # Méthodes utilitaires
     # ----------------------------
-    
+
     def set_password(self, raw_password: str) -> None:
         """
         Définit le mot de passe de l'utilisateur.
@@ -127,7 +133,7 @@ class User(ModelData):
         return role in self.roles
 
     # Helpers de propriété
-    
+
     def enable_ownership_transfer(self) -> None:
         """Autorise cet utilisateur à transférer la propriété de ses enregistrements."""
         self.allow_ownership_transfer = True

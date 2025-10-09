@@ -1,7 +1,6 @@
 # File: tests/test_permissions_register.py
 
 import pytest
-from typing import List
 from app.config.permissions_config import PermissionsRegister, Permissions, AllUserRolePermissions
 from app.config.user_roles import UserRole
 
